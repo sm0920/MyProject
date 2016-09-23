@@ -1,0 +1,14 @@
+<!doctype html>
+<meta charset=utf-8>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}"
+<html lang='ko'>
+	<head>
+		<title>도란도란 대화방 - {{ page }}</title>
+		{% block head %}
+		{% endblock %}
+	</head>
+	<body>
+		{% block body %}
+		{% endblock %}
+	</body>
+</html>

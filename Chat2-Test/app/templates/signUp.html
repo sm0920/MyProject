@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+{% block head %}
+	<!-- Empty -->
+{% endblock %}
+{% block body %}
+	<div class=page style='width: 18em;'>
+		<center>
+			<h1>{{ page }}</h1>
+			<form method='POST' action="{{ url_for('main.index') }}" style='vertical-align: left;'>
+				<br><br>
+				<input type='text' name='userid' class='signUp_input' placeholder='아이디' value={{ session['userid'] }}>
+				{% for message in get_flashed_messages(category_filter=["id"]) %}
+				<div class=signUp_flash>{{ message }}</div>
+				{% endfor %}
+				<br>
+				<input type='password' name='password' class='signUp_input' placeholder='비밀번호' value={{ session['password'] }}>
+				{% for message in get_flashed_messages(category_filter=["pw"]) %}
+				<div class=signUp_flash>{{ message }}</div>
+				{% endfor %}
+				<br>
+				<input type='text' name='username' class='signUp_input' placeholder='사용자 이름' value={{ session['username'] }}>
+				{% for message in get_flashed_messages(category_filter=["name"]) %}
+				<div class=signUp_flash>{{ message }}</div>
+				{% endfor %}
+				<br>
+				<input type='submit' class='signUp_input' value='가입하기'>
+			</form>
+			<a href="{{ url_for('main.index', clear=True) }}" style='color: #0080FF; font-size: 10pt;'>돌아가기</a>
+		</center>
+	</div>
+{% endblock %}

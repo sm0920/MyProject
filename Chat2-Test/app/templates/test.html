@@ -1,0 +1,46 @@
+<!doctype html>
+<meta charset="utf-8">
+<html>
+	<head>
+		<title>테스트용</title>
+		<script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				namespace = '/test';
+
+				var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+				
+				socket.on('response', function(msg) {
+					$('#log').append('<p>' + msg.username + ': ' + msg.data + '</p>');
+				});
+
+				$('form#broadcast').submit(function(event) {
+					if ($('#broadcast_data').val() == "")
+						return false;
+					socket.emit('broadcast_event', {data: $('#broadcast_data').val()});
+					$('#broadcast_data').val("");
+					return false;
+				});
+
+				$('form#disconnect').submit(function(event) {
+					socket.emit('disconnect_request');
+					return false;
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<h1>테스트..!</h1>
+		<div id="log">
+			<!-- broadcast_data -->
+		</div>
+		<form id="broadcast" method="POST" action='#'>
+			<input type="text" name="broadcast_data" id="broadcast_data">
+			<input type="submit" value="Submit">
+		</form>
+		<form id="disconnect" method="POST" action='#'>
+			<input type="submit" value="Disconnect">
+		</form>
+	</body>
+</html>

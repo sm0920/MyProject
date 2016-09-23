@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+{% block head %}
+	<!-- Empty -->
+{% endblock %}
+{% block body %}
+	<div class=page style='width: 20em;'>
+		<center>
+			<h1>{{ page }}</h1>
+			<form method='POST' action="{{ url_for('main.chat') }}">
+				<br><br>
+				<input type='text' name='userid' class='index_input' placeholder='아이디' value={{ session['userid'] }}>
+				{% for message in get_flashed_messages(category_filter=["id"]) %}
+				<br><div class=index_flash>{{ message }}</div>
+				{% endfor %}
+				<br>
+				<input type='password' name='password' class='index_input' placeholder='비밀번호' value={{ session['password'] }}>
+				{% for message in get_flashed_messages(category_filter=["pw"]) %}
+				<br><div class=index_flash>{{ message }}</div>
+				{% endfor %}
+				<br><br>
+				<input type='text' name='roomname' class='index_input' placeholder='방제목'  value={{ session['roomname'] }}>
+				{% for message in get_flashed_messages(category_filter=["room"]) %}
+				<br><div class=index_flash>{{ message }}</div>
+				{% endfor %}
+				<br>
+				<input type='submit' class='index_input' value='입장'>
+				<br><br>
+			</form>
+			<a href="{{ url_for('main.signUp') }}" style='color: #0080FF; font-size: 10pt;'>계정 만들기</a>
+		</center>
+	</div>
+{% endblock %}
+
