@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class=chatLog style="overflow:auto; width: 35em; height:25em; word-break:break-all">
+	{% for chatting in chatLog %}
+	<li><a>{{ chatting.name }}:</a>{{ chatting.text|safe }}
+	{% endfor %}
+</div>
+<form action="{{ url_for('add_chatLog') }}" method=post>
+	<input type=text size=70 name=text>
+	<input type=submit value=전송>
+</form>
+{% endblock %}
+
