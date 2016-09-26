@@ -69,10 +69,8 @@ def chat(query):
         error = True
     else:
         user = query.filter_by(userid=userid).first()
-        p = Password()
-        p.password = password
 
-        if not user or not user.password_hash == p:
+        if not user or not user.password_hash == Password(password):
             flash('잘못된 비밀번호입니다.', 'pw')
             error = True
             session.pop('password')

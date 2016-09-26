@@ -1,8 +1,8 @@
 from sqlalchemy import create_engine, Column, Integer, String, Unicode
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from bcrypt import hashpw, gensalt
 from functools import wraps
+
 
 db_url = 'postgresql+psycopg2://beat@localhost/chat2_db'
 
@@ -11,8 +11,18 @@ db_session = scoped_session(sessionmaker(bind=engine))
 
 Base = declarative_base()
 
+
+def call_query(func):
+    @wraps(func)
+    def wrapper():
+        query = db_session.query(User)
+        return func(query)
+    return wrapper
+
+
 def init_db():
     Base.metadata.create_all(engine)
+
 
 class User(Base):
     __tablename__ = 'users'
@@ -29,30 +39,3 @@ class User(Base):
 
     def __repr__(self):
         return "<User : %s, %s, %s>" % (self.userid, self.password_hash, self.username)
-    
-    class Password(object):
-        def encrypt(self, password):
-            password = password.encode('utf-8')
-            return hashpw(password, gensalt())
-    
-        @property
-        def password(self):
-            return self._password
-
-        @password.setter
-        def password(self, password):
-            self._password = password
-
-        def __eq__(self, other):
-            self._password = self._password.encode('utf-8')
-            other = other.encode('utf-8')
-            return hashpw(self._password, other) == other
-
-
-def call_query(func):
-    @wraps(func)
-    def wrapper():
-        query = db_session.query(User)
-        return func(query)
-    return wrapper
-

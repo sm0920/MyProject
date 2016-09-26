@@ -14,13 +14,16 @@ class Password(object):
     def encrypt(self, password):
         password = password.encode('utf-8')
         return hashpw(password, gensalt())
-    
+
     @property
     def password(self):
         return self._password
 
     @password.setter
     def password(self, password):
+        self._password = password
+
+    def __init__(self, password):
         self._password = password
 
     def __eq__(self, other):
