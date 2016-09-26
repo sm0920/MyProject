@@ -55,31 +55,32 @@ def chat(query):
     userid = session['userid'] = request.form['userid']
     password = session['password'] = request.form['password']
     roomname = session['roomname'] = request.form['roomname']
-    
-    if not bool(userid):
+
+    if not userid:
+        error = True
         flash('아이디를 입력하세요.', 'id')
-        error = True
     elif query.filter(User.userid == userid).count() == 0:
-        flash('유효한 아이디를 입력하세요.', 'id')
         error = True
+        flash('유효한 아이디를 입력하세요.', 'id')
         session.pop('userid')
 
-    if not bool(password):
-        flash('비밀번호를 입력하세요.', 'pw')
+    if not password:
         error = True
+        flash('비밀번호를 입력하세요.', 'pw')
     else:
         user = query.filter_by(userid=userid).first()
 
         if not user or not user.password_hash == Password(password):
-            flash('잘못된 비밀번호입니다.', 'pw')
             error = True
+            flash('잘못된 비밀번호입니다.', 'pw')
             session.pop('password')
         
-    if not bool(roomname):
-        flash('방제목을 입력하세요.', 'room')
+    if not roomname:
         error = True
+        flash('방제목을 입력하세요.', 'room')
 
     if error:
         return redirect(url_for('main.index'))
+    
     session['username'] = query.filter_by(userid=userid).one().username
     return render_template('chat.html', page=roomname)
